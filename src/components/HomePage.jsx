@@ -363,10 +363,10 @@ export default function HomePage() {
 
           <div className="text-center">
             <Link
-              to="/templates"
+              to="/create-resume"
               className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors text-lg"
             >
-              <span>Ver todos os templates</span>
+              <span>Começar agora</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
