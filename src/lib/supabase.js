@@ -1,23 +1,25 @@
-import { createClient } from '@supabase/supabase-js'
+// src/lib/supabase.js
+import { createClient } from "@supabase/supabase-js";
 
-// Obter variáveis de ambiente com fallback para valores vazios
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || ''
+// Variáveis de ambiente (apenas via import.meta.env no Vite)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-// Verificar se as variáveis de ambiente estão configuradas
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Variáveis de ambiente do Supabase não configuradas:');
-  console.error('REACT_APP_SUPABASE_URL:', supabaseUrl ? 'Configurada' : 'Não configurada');
-  console.error('REACT_APP_SUPABASE_ANON_KEY:', supabaseAnonKey ? 'Configurada' : 'Não configurada');
-  
-  // Não lançar erro imediatamente para permitir que o app carregue
-  // O erro será tratado quando tentar usar o Supabase
+  throw new Error(
+    "❌ Supabase não configurado. Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY no .env.local ou no Vercel."
+  );
 }
 
-// Criar e exportar o cliente Supabase
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Criar cliente Supabase
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
-    autoRefreshToken: true
-  }
-})
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+});
+
+// Exportar de duas formas (named e default)
+export { supabase };
+export default supabase;
